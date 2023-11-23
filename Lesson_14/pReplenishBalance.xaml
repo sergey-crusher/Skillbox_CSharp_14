@@ -1,0 +1,60 @@
+﻿<Page x:Class="Lesson_14.pReplenishBalance"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:Lesson_14"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="pReplenishBalance">
+    <Page.Resources>
+        <Style TargetType="StackPanel">
+            <Setter Property="VerticalAlignment" Value="Bottom"></Setter>
+        </Style>
+        <Style TargetType="TextBox">
+            <Setter Property="Width" Value="100"></Setter>
+            <Setter Property="Height" Value="18"></Setter>
+            <Setter Property="HorizontalAlignment" Value="Left"></Setter>
+            <Setter Property="Margin" Value="0 0 0 15"></Setter>
+        </Style>
+        <Style TargetType="TextBlock">
+            <Setter Property="Height" Value="18"></Setter>
+            <Setter Property="Margin" Value="0 0 10 15"></Setter>
+        </Style>
+        <Style TargetType="Button">
+            <Setter Property="Width" Value="100"></Setter>
+            <Setter Property="Height" Value="30"></Setter>
+            <Setter Property="Margin" Value="0 0 0 15"></Setter>
+        </Style>
+    </Page.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+
+        <StackPanel>
+            <TextBlock HorizontalAlignment="Right">Сумма пополнения</TextBlock>
+        </StackPanel>
+
+        <StackPanel Grid.Column="1">
+            <TextBox x:Name="TextBoxSum"></TextBox>
+        </StackPanel>
+        <StackPanel Grid.ColumnSpan="2" Grid.Row="1" VerticalAlignment="Top">
+            <Button
+                Click="ButtonReplenish"
+                Command="NavigationCommands.BrowseBack"
+                Content="Пополнить">
+            </Button>
+            <Button
+                Command="NavigationCommands.BrowseBack"
+                Content="Назад">
+            </Button>
+        </StackPanel>
+    </Grid>
+</Page>
