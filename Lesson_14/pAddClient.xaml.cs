@@ -47,8 +47,8 @@ namespace Lesson_14
             }
             else
             {
-                MainWindow.clients.Add(FullName, INN, Phone);
-                MainWindow.CurrentClientINN = INN;
+                PublicVariables.clients.Add(FullName, INN, Phone);
+                PublicVariables.CurrentClientINN = INN;
             }
         }
     }

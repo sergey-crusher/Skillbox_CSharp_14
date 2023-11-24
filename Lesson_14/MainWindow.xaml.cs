@@ -29,10 +29,10 @@ namespace Lesson_14
         /// <summary>
         /// Экземпляр для работы с клиентами
         /// </summary>
-        public static Clients? clients;
-        public static ITransfer<SubAccount, SubAccount> transfer = new Transfer();
-        public static string CurrentClientINN;
-        public static object CurrentAccountNumber;
+        //public static Clients? clients;
+        //public static ITransfer<SubAccount, SubAccount> transfer = new Transfer();
+        //public static string CurrentClientINN;
+        //public static object CurrentAccountNumber;
 
         /// <summary>
         /// Экземпляр класса всплывающего сообщения
@@ -41,22 +41,22 @@ namespace Lesson_14
 
         public MainWindow()
         {
-            if (clients == null)
+            if (PublicVariables.clients == null)
             {
-                clients = new Clients();
+                PublicVariables.clients = new Clients();
                 // добавлем 
-                clients.Notify += DisplayMessage; // вывод сообщений в интерфейсе
-                clients.Notify += IO.Save2File; // сохрание истории изменений
+                PublicVariables.clients.Notify += DisplayMessage; // вывод сообщений в интерфейсе
+                PublicVariables.clients.Notify += IO.Save2File; // сохрание истории изменений
             }
-            if (clients.Count > 0)
+            if (PublicVariables.clients.Count > 0)
             {
                 InitializeComponent();
                 TextBlockMessage.DataContext = displayMessage;
-                dgClients.ItemsSource = clients;
-                dgAccounts.ItemsSource = clients.First().Accounts;
-                CurrentClientINN = clients.First().INN;
+                dgClients.ItemsSource = PublicVariables.clients;
+                dgAccounts.ItemsSource = PublicVariables.clients.First().Accounts;
+                PublicVariables.CurrentClientINN = PublicVariables.clients.First().INN;
             }
-            clients.SaveChange();
+            PublicVariables.clients.SaveChange();
         }
 
         /// <summary>
@@ -79,8 +79,8 @@ namespace Lesson_14
             if (dgClients.SelectedItems.Count > 0)
             {
                 Client client = dgClients.SelectedItems[0] as Client;
-                clients.Remove(client.INN);
-                clients.SaveChange();
+                PublicVariables.clients.Remove(client.INN);
+                PublicVariables.clients.SaveChange();
             }
             else
             {
@@ -95,9 +95,9 @@ namespace Lesson_14
         /// <param name="e"></param>
         private void dgClients_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
         {
-            CurrentClientINN = ((Client)e.Row.DataContext).INN;
-            clients.Update(ref clients, (Client)e.Row.DataContext, e.Column.SortMemberPath, (e.EditingElement as TextBox).Text);
-            clients.SaveChange();
+            PublicVariables.CurrentClientINN = ((Client)e.Row.DataContext).INN;
+            PublicVariables.clients.Update(ref PublicVariables.clients, (Client)e.Row.DataContext, e.Column.SortMemberPath, (e.EditingElement as TextBox).Text);
+            PublicVariables.clients.SaveChange();
         }
 
         /// <summary>
@@ -110,7 +110,7 @@ namespace Lesson_14
             try
             {
                 Client client = (Client)e.AddedItems[0];
-                CurrentClientINN = client.INN;
+                PublicVariables.CurrentClientINN = client.INN;
                 dgAccounts.ItemsSource = client.Accounts;
             }
             catch
@@ -149,8 +149,8 @@ namespace Lesson_14
 
             if (dgAccounts.SelectedItems.Count > 0)
             {
-                clients.RemoveAccount<Account>(client.INN, dgAccounts.SelectedItems[0] as Account);
-                clients.SaveChange();
+                PublicVariables.clients.RemoveAccount<Account>(client.INN, dgAccounts.SelectedItems[0] as Account);
+                PublicVariables.clients.SaveChange();
             }
             else
             {
@@ -167,7 +167,7 @@ namespace Lesson_14
         {
             if (dgAccounts.SelectedItems.Count > 0)
             {
-                CurrentAccountNumber = (dgAccounts.SelectedItems[0] as Account).Number;
+                PublicVariables.CurrentAccountNumber = (dgAccounts.SelectedItems[0] as Account).Number;
                 NavigationService.Navigate(new Uri("pReplenishBalance.xaml", UriKind.Relative));
             }
             else

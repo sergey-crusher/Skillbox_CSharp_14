@@ -45,7 +45,7 @@ namespace Lesson_14
 
         private void ButtonCreate(object sender, RoutedEventArgs e)
         {
-            if (ComboBoxType.Text != "" && TextBoxNumber.Text != "")
+            if (ComboBoxType.Text != "" && TextBoxNumber.Text != "" )
             {
                 Account account;
                 if (ComboBoxType.SelectedIndex == 0)
@@ -56,7 +56,7 @@ namespace Lesson_14
                 {
                     account = new Deposit(TextBoxNumber.Text, 0);
                 }
-                MainWindow.clients.AddAccount(MainWindow.CurrentClientINN, account);
+                PublicVariables.clients.AddAccount(PublicVariables.CurrentClientINN, account);
             }
             else
             {

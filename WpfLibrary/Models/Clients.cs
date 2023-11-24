@@ -10,6 +10,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows;
+using Lesson_14.Models.Extension;
 
 namespace Lesson_14.Models
 {
@@ -124,11 +125,19 @@ namespace Lesson_14.Models
         /// <param name="account">Данные счёта</param>
         public void AddAccount<T>(string INN, T account) where T : Account
         {
-            if (FindClient(INN))
+            string? status = account.Number.ToString().AccountCorrectness();
+            if (status == null)
             {
-                Client client = this.First(x => x.INN == INN);
-                client.AddAccount<T>(account);
-                Notify?.Invoke($"Вы добавили счёт клиенту {client.FullName}");
+                if (FindClient(INN))
+                {
+                    Client client = this.First(x => x.INN == INN);
+                    client.AddAccount<T>(account);
+                    Notify?.Invoke($"Вы добавили счёт клиенту {client.FullName}");
+                }
+            }
+            else
+            {
+                Notify?.Invoke(status);
             }
         }
 
@@ -152,14 +161,23 @@ namespace Lesson_14.Models
         /// Пополнение счёта
         /// </summary>
         /// <param name="sum">Сумма пополнения</param>
-        public void ReplenishBalance(decimal sum)
+        public void ReplenishBalance(string str_sum)
         {
-            if (FindClient(MainWindow.CurrentClientINN))
+            if (FindClient(PublicVariables.CurrentClientINN))
             {
-                Client client = this.First(x => x.INN == MainWindow.CurrentClientINN);
-                Account account = (Account)client.Accounts.First(x => x.Number == MainWindow.CurrentAccountNumber);
-                account.ReplenishBalance(sum);
-                Notify?.Invoke($"Вы пополнили счёт {MainWindow.CurrentAccountNumber} на сумму {sum}");
+                Client client = this.First(x => x.INN == PublicVariables.CurrentClientINN);
+                Account account = (Account)client.Accounts.First(x => x.Number == PublicVariables.CurrentAccountNumber);
+                decimal sum;
+                string? status = str_sum.EParse(out sum);
+                if (status == null)
+                {
+                    account.ReplenishBalance(sum);
+                    Notify?.Invoke($"Вы пополнили счёт {PublicVariables.CurrentAccountNumber} на сумму {sum}");
+                }
+                else
+                {
+                    Notify?.Invoke($"Вы указали сумму {str_sum}. Что вызвало ошибку: {status}");
+                }
             }
         }
 
@@ -169,10 +187,19 @@ namespace Lesson_14.Models
         /// <param name="acc_out">Счёт с которого переводится</param>
         /// <param name="acc_in">Счёт на который переводится</param>
         /// <param name="sum">Сумма перевода</param>
-        public void Transfer(Account acc_out, Account acc_in, decimal sum)
+        public void Transfer(Account acc_out, Account acc_in, string str_sum)
         {
-            MainWindow.transfer.Post(acc_out, acc_in, sum);
-            Notify?.Invoke($"Перевод со счёта {acc_out.Number} на {acc_in.Number} на сумму {sum}");
+            decimal sum;
+            string? status = str_sum.EParse(out sum);
+            if (status == null)
+            {
+                PublicVariables.transfer.Post(acc_out, acc_in, sum);
+                Notify?.Invoke($"Перевод со счёта {acc_out.Number} на {acc_in.Number} на сумму {sum}");
+            }
+            else
+            {
+                Notify?.Invoke($"Вы указали сумму {str_sum}. Что вызвало ошибку: {status}");
+            }
         }
 
         /// <summary>

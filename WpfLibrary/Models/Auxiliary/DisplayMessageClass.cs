@@ -66,7 +66,7 @@ namespace Lesson_14.Models.Auxiliary
         /// </summary>
         private void Timer()
         {
-            aTimer = new System.Timers.Timer(2000);
+            aTimer = new System.Timers.Timer(4000);
             aTimer.Elapsed += MuteMessage;
             aTimer.AutoReset = false;
             aTimer.Enabled = true;

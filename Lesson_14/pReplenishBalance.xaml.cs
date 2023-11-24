@@ -29,15 +29,7 @@ namespace Lesson_14
 
         private void ButtonReplenish(object sender, RoutedEventArgs e)
         {
-            decimal sum;
-            if (decimal.TryParse(TextBoxSum.Text, out sum))
-            {
-                MainWindow.clients.ReplenishBalance(decimal.Parse(TextBoxSum.Text));
-            }
-            else
-            {
-                MessageBox.Show("Введите число");
-            }
+            PublicVariables.clients.ReplenishBalance(TextBoxSum.Text);
         }
     }
 }
